@@ -14,7 +14,7 @@ class EthCtrl {
         this.fioContract = new this.web3.eth.Contract(fioABI, config.FIO_token);
         this.fioNftContract = new this.web3.eth.Contract(fioNftABI, config.FIO_NFT);
     }
-    async wrapFunction(tx_id, quantity) {// excute wrap action
+    async wrapFunction(useraddress, tx_id, quantity) {// excute wrap action
         const info = await (await fetch(process.env.ETHAPIURL)).json();
         const gasMode = process.env.USEGASAPI;
         var gasPrice = 0;
@@ -41,10 +41,10 @@ class EthCtrl {
                 .then((response) => {
                     console.log(response);
                 });
-                if(this.web3.utils.isAddress(config.ownerAddress) === true) { //check validation if the address is ERC20 address
+                if(this.web3.utils.isAddress(useraddress) === true) { //check validation if the address is ERC20 address
                     console.log("quantity: ", quantity);
                     console.log("gas: ", gasPrice);
-                    const wrapFunc = this.fioContract.methods.wrap(config.ownerAddress, quantity, tx_id);
+                    const wrapFunc = this.fioContract.methods.wrap(useraddress, quantity, tx_id);
                     let wrapABI = wrapFunc.encodeABI();
                     var nonce = await this.web3.eth.getTransactionCount(pubKey);//calculate noce value for transaction
                     console.log(signKey);    
