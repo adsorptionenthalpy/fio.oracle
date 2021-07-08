@@ -101,6 +101,7 @@ class FIOCtrl {
                 if (wrapData[i].action_trace.act.data.memo == "Token Wrapping") {// get FIO action data if wrapping action
                     console.log(wrapData[i]);
                     const quantity = wrapData[i].action_trace.act.data.quantity;
+                    const useraddress = wrapData[i].action_trace.act.data.pubaddress;
                     const bn = bignumber(quantity.split(".")[0]);
                     const weiQuantity = Number(bn) * 1000000000;
                     const tx_id = wrapData[i].action_trace.trx_id;
@@ -110,7 +111,7 @@ class FIOCtrl {
                     fs.appendFileSync(pathFIO, JSON.stringify(wrapData[i]));
                     fs.appendFileSync(pathWrapTransact, wrapText);
                     if (count == 0) {
-                        ethCtrl.wrapFunction(tx_id, weiQuantity);//excute first wrap action
+                        ethCtrl.wrapFunction(useraddress, tx_id, weiQuantity);//excute first wrap action
                     }
                     count++;
                 }   
